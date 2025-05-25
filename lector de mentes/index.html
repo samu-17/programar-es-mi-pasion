@@ -1,25 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lector de mentes</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <form>
-    <label>Piensa en un número del 1 al 10</label>
-    <input type="text" id="numero">
-    <button type="submit" id="leerMenteBtn">Read my mind</button>
-  </form>
-  <div class="dialog">
-    <div class="process">
-      <p class="mensaje">Analizando..</p>
-      <div class="box">
-        <div class="loading"></div>
-      </div>
-    </div>
-  </div>
-  <script src="main.js"></script>
-</body>
-</html>
+import turtle
+import time
+from random import randint
+
+# Configuración inicial
+screen = turtle.Screen()
+screen.bgcolor("black")
+t = turtle.Turtle()
+t.speed(0)
+t.hideturtle()
+
+# Función para dibujar un corazón
+def dibujar_corazon(x, y, tamaño, color):
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+    t.color(color)
+    t.fillcolor(color)
+    t.begin_fill()
+    t.left(50)
+    t.forward(tamaño)
+    for _ in range(160):
+        t.right(1)
+        t.forward(tamaño/40)
+    t.left(120)
+    for _ in range(160):
+        t.right(1)
+        t.forward(tamaño/40)
+    t.forward(tamaño)
+    t.end_fill()
+    t.setheading(0)
+
+# Función para escribir texto con efecto de máquina de escribir
+def escribir_texto(mensaje, x, y, color, tamaño):
+    t.penup()
+    t.goto(x, y)
+    t.color(color)
+    for letra in mensaje:
+        t.write(letra, font=("Arial", tamaño, "bold"))
+        t.forward(tamaño)
+        time.sleep(0.1)
+
+# Lista de colores para los corazones
+colores = ["red", "deep pink", "hot pink", "pink"]
+
+# Función para crear efecto de lluvia de corazones
+def lluvia_corazones():
+    for _ in range(20):
+        x = randint(-300, 300)
+        y = randint(-200, 200)
+        tamaño = randint(20, 40)
+        color = colores[randint(0, len(colores)-1)]
+        dibujar_corazon(x, y, tamaño, color)
+
+# Crear la animación principal
+lluvia_corazones()
+
+# Dibujar corazón central más grande
+dibujar_corazon(0, 0, 100, "red")
+
+# Escribir mensajes románticos
+mensajes = [
+    "Mi amor por ti",
+    "crece cada día más",
+    "Eres lo mejor",
+    "que me ha pasado",
+    "Te Amo ♥"
+]
+
+y = 150
+for mensaje in mensajes:
+    escribir_texto(mensaje, -150, y, "white", 20)
+    y -= 50
+
+# Mantener la ventana abierta
+screen.exitonclick()
